@@ -1,144 +1,144 @@
 # CogniX Surface
 
-> Piattaforma di analisi del rischio cognitivo per la rilevazione di attacchi di social engineering nelle comunicazioni aziendali.
+> Cognitive risk analysis platform for detecting social engineering attacks in corporate communications.
 
 ---
 
-## Panoramica
+## Overview
 
-CogniX Surface analizza comunicazioni testuali alla ricerca di pattern di attacco cognitivo (phishing, BEC, pretexting, CEO fraud). Il sistema combina:
+CogniX Surface analyzes text communications for cognitive attack patterns (phishing, BEC, pretexting, CEO fraud). The system combines:
 
-- **NLP semantico** — embedding con sentence-transformers (`all-MiniLM-L6-v2`)
-- **Feature engineering** — 11 dimensioni psicologiche (urgenza, autorita, fiducia, paura, social proof, reciprocita, impegno, simpatia) + segnali linguistici (sentiment, lunghezza testo)
-- **Scoring interpretabile** — pesi configurabili, trasformazione esponenziale, contributo spiegabile per feature
-- **Dashboard web interattiva** — FastAPI + Bootstrap + Vega-Lite
-- **Triage operativo** — coda prioritizzata con SLA, persistenza SQLite, autenticazione API Key
+- **Semantic NLP** — sentence-transformers embeddings (`all-MiniLM-L6-v2`)
+- **Feature engineering** — 11 psychological dimensions (urgency, authority, trust, fear, social proof, reciprocity, commitment, liking) + linguistic signals (sentiment, text length)
+- **Explainable scoring** — configurable weights, exponential transformation, per-feature contribution breakdown
+- **Interactive web dashboard** — FastAPI + Bootstrap + Vega-Lite
+- **Operational triage** — prioritized queue with SLA, SQLite persistence, API Key authentication
 
-L'obiettivo non e sostituire l'analista umano, ma accelerare prioritizzazione, investigazione e follow-up.
+The goal is to accelerate analyst workflows (prioritization, investigation, follow-up), not to replace human decision-making.
 
 ---
 
-## Stato del Progetto
+## Project Status
 
-| Metrica | Valore |
-|---------|--------|
-| Backend API | `app/dashboard.py` — 20 endpoint REST |
+| Metric | Value |
+|--------|-------|
+| Backend API | `app/dashboard.py` — 20 REST endpoints |
 | Frontend | `app/templates/dashboard.html` — Bootstrap 5 + Vanilla JS + Vega-Embed |
-| Persistenza | SQLite WAL (`app/database.py`) — 4 tabelle |
-| Test automatici | **153** (13 file di test) |
-| Dataset demo | `datacommunications.txt.txt` — 115 messaggi, 20 utenti |
-| Containerizzazione | Docker + docker-compose |
-| Autenticazione | API Key (`X-API-Key`) su 8 endpoint sensibili |
-| Rate limiting | slowapi (120/min globale, 3/min su pipeline) |
+| Persistence | SQLite WAL (`app/database.py`) — 4 tables |
+| Automated tests | **153** (13 test files) |
+| Demo dataset | `datacommunications.txt.txt` — 115 messages, 20 users |
+| Containerization | Docker + docker-compose |
+| Authentication | API Key (`X-API-Key`) on 8 sensitive endpoints |
+| Rate limiting | slowapi (120/min global, 3/min on pipeline) |
 
 ---
 
-## Funzionalita Principali
+## Key Capabilities
 
-### 1) Pipeline Analitica
+### 1) Analytics Pipeline
 
-| Step | Modulo | Descrizione |
+| Step | Module | Description |
 |------|--------|-------------|
-| 1 | `ingestion/loader.py` | Caricamento CSV (`;` separator), fallback encoding, deduplicazione |
-| 2 | `analysis/nlp_engine.py` | Embedding semantici (sentence-transformers, batch 64) |
-| 3 | `analysis/analyzer.py` | Analisi VADER sentiment + conteggio keyword per 7 categorie |
-| 4 | `analysis/feature_engineering.py` | Regex pattern matching + normalizzazione min-max + trasformazione `1-exp(-x)` |
-| 5 | `model/risk_engine.py` | Scoring pesato con normalizzazione assoluta, contributi per feature, driver dominante |
-| 6 | `app/dashboard.py` | Esposizione API REST + visualizzazione dashboard interattiva |
+| 1 | `ingestion/loader.py` | CSV loading (`;` separator), encoding fallback, deduplication |
+| 2 | `analysis/nlp_engine.py` | Semantic embeddings (sentence-transformers, batch 64) |
+| 3 | `analysis/analyzer.py` | VADER sentiment analysis + keyword counting across 7 categories |
+| 4 | `analysis/feature_engineering.py` | Regex pattern matching + min-max normalization + `1-exp(-x)` transform |
+| 5 | `model/risk_engine.py` | Weighted scoring with absolute normalization, per-feature contributions, dominant driver |
+| 6 | `app/dashboard.py` | REST API + interactive dashboard visualization |
 
-### 2) Dashboard Interattiva
+### 2) Interactive Dashboard
 
-- **KPI principali**: volumi, distribuzione rischio, rischio medio/max, percentuale high-risk
-- **9 visualizzazioni**: histogram, donut, driver bar, scatter utenti, heatmap contributi, correlation matrix, boxplot, weights, feature averages
-- **Filtri avanzati**: intervallo rischio, bande (Low/Medium/High), driver, utenti, query testo, top-N
-- **Tabelle**: ordinamento, ricerca locale, paginazione (offset/limit con metadata `has_more`)
-- **Explainability**: detail card con breakdown contributi per messaggi ad alto rischio
-- **Preset filtri**: salvataggio/caricamento configurazioni filtro (max 50, persistiti su SQLite)
+- **Core KPIs**: volume, risk distribution, average/max risk, high-risk percentage
+- **9 visualizations**: histogram, donut, driver bar, user scatter, contribution heatmap, correlation matrix, boxplot, weights, feature averages
+- **Advanced filters**: risk range, bands (Low/Medium/High), driver, users, text query, top-N
+- **Tables**: sortable, searchable, paginated (offset/limit with `has_more` metadata)
+- **Explainability**: detail cards with per-feature contribution breakdown for high-risk messages
+- **Filter presets**: save/load filter configurations (max 50, persisted in SQLite)
 
-### 3) Operativita e Monitoraggio
+### 3) Operations and Monitoring
 
-- Progress pipeline real-time via **SSE** (`/api/run/stream`) con eventi `progress`, `done`, `fatal`
-- Auto-refresh dashboard configurabile
-- **KPI Timeline**: storico snapshot dopo ogni run (max 200, persistiti su SQLite)
-- Run history con confronto KPI delta tra run
-- Persistenza run history con IndexedDB + fallback localStorage
-- **Audit log**: registrazione azioni (cambi stato, update pesi, webhook) su SQLite
+- Real-time pipeline progress via **SSE** (`/api/run/stream`) with `progress`, `done`, `fatal` events
+- Configurable auto-refresh
+- **KPI Timeline**: snapshot history after each run (max 200, persisted in SQLite)
+- Run history with KPI delta comparison between runs
+- Run history persistence via IndexedDB + localStorage fallback
+- **Audit log**: action recording (status changes, weight updates, webhooks) in SQLite
 
-### 4) Alerting Avanzato
+### 4) Advanced Alerting
 
-- Notifiche browser native
-- Regole multi-trigger: high-risk percentage, avg risk, high-risk count
-- Cooldown anti-spam + limite giornaliero per regola
-- **Webhook relay** backend con:
-  - Firma HMAC-SHA256 (`X-CogniX-Signature`)
-  - Retry esponenziale (3 tentativi, backoff fino a 4s)
-  - No retry su errori 4xx
-- Storico alert dedicato in UI
+- Native browser notifications
+- Multi-rule triggers: high-risk percentage, average risk, high-risk count
+- Anti-spam cooldown + daily max-per-rule cap
+- **Backend webhook relay** with:
+  - HMAC-SHA256 signing (`X-CogniX-Signature`)
+  - Exponential retry (3 attempts, backoff up to 4s)
+  - No retry on 4xx errors
+- Dedicated alert history in UI
 
-### 5) Triage Operativo
+### 5) Operational Triage
 
-- Coda casi con workflow: `new` → `in_progress` → `mitigated` / `false_positive`
-- **Priorita automatica**: `P1` (High), `P2` (Medium), `P3` (Low) basata su risk score
-- **SLA automatici** per item aperti con flag overdue; ordinamento coda prioritizza SLA scaduti
-- Assegnatario e note operative (sanitizzate anti-XSS)
-- **Bulk update**: aggiornamento massivo fino a 250 item per richiesta
-- Sync automatica da risultati + bootstrap manuale
-- **Persistenza completa** su SQLite (triage, preset, timeline, audit)
+- Case queue with workflow: `new` → `in_progress` → `mitigated` / `false_positive`
+- **Automatic priority**: `P1` (High), `P2` (Medium), `P3` (Low) based on risk score
+- **Automatic SLA** deadlines for open items with overdue flag; queue ordering prioritizes overdue items
+- Assignee and operational notes (XSS-sanitized)
+- **Bulk update**: mass update up to 250 items per request
+- Automatic sync from results + manual bootstrap
+- **Full persistence** in SQLite (triage, presets, timeline, audit)
 
-### 6) Personalizzazione UI
+### 6) UI Personalization
 
-- Tema chiaro/scuro
-- Palette colore e background personalizzabili
-- Sidebar theme personalizzabile
-- Preferenze persistite su storage locale browser
+- Light/dark mode
+- Custom color themes and backgrounds
+- Custom sidebar appearance
+- Preferences persisted in browser storage
 
-### 7) Sicurezza e Hardening
+### 7) Security and Hardening
 
-- **Autenticazione API Key** (`X-API-Key`) con confronto costante (`hmac.compare_digest`)
-- **Sanitizzazione input**: `html.escape()` su note, assegnatario, nomi preset; `max_length` su tutti i campi Pydantic
-- **Rate limiting**: 120 req/min globale, 3 req/min sugli endpoint pipeline
-- **CORS configurabile** via env (`COGNIX_CORS_ORIGINS`)
-- **Variabili ambiente** via `.env` (python-dotenv)
-- **Modalita sviluppo**: autenticazione disabilitata se `COGNIX_API_KEY` vuota
+- **API Key authentication** (`X-API-Key`) with constant-time comparison (`hmac.compare_digest`)
+- **Input sanitization**: `html.escape()` on notes, assignee, preset names; `max_length` on all Pydantic string fields
+- **Rate limiting**: 120 req/min global, 3 req/min on pipeline endpoints
+- **Configurable CORS** via env (`COGNIX_CORS_ORIGINS`)
+- **Environment variables** via `.env` (python-dotenv)
+- **Dev mode**: authentication disabled when `COGNIX_API_KEY` is empty
 
 ---
 
-## Struttura Repository
+## Repository Layout
 
 ```text
 Cognitive_Attack_Mapper/
 ├── .dockerignore
-├── .env                             # Variabili ambiente (non committare)
-├── .env.example                     # Template variabili ambiente
+├── .env                             # Environment variables (do not commit)
+├── .env.example                     # Environment template
 ├── docker-compose.yml
 ├── Dockerfile
-├── README.md                        # Questo file
-├── README.en.md                     # Versione inglese
-├── requirements.txt                 # 14 dipendenze Python
-├── datacommunications.txt.txt       # Dataset demo (115 messaggi, 20 utenti)
+├── README.md                        # Italian version
+├── README.en.md                     # This file
+├── requirements.txt                 # 14 Python dependencies
+├── datacommunications.txt.txt       # Demo dataset (115 messages, 20 users)
 │
 ├── analysis/
 │   ├── __init__.py
 │   ├── analyzer.py                  # VADER sentiment + keyword counting
-│   ├── constants.py                 # Keyword, regex, soglie bande rischio
-│   ├── feature_engineering.py       # Regex matching + normalizzazione + trasformazione
-│   └── nlp_engine.py               # Sentence-transformers embedding
+│   ├── constants.py                 # Keywords, regex, risk band thresholds
+│   ├── feature_engineering.py       # Regex matching + normalization + transform
+│   └── nlp_engine.py               # Sentence-transformers embeddings
 │
 ├── app/
 │   ├── __init__.py
-│   ├── dashboard.py                 # FastAPI app principale (20 endpoint)
-│   ├── database.py                  # Persistenza SQLite (4 tabelle, WAL mode)
-│   ├── main.py                      # Entry point CLI
+│   ├── dashboard.py                 # Main FastAPI app (20 endpoints)
+│   ├── database.py                  # SQLite persistence layer (4 tables, WAL mode)
+│   ├── main.py                      # CLI entry point
 │   ├── static/
 │   │   └── favicon.svg
 │   └── templates/
-│       └── dashboard.html           # Frontend Jinja2 (Bootstrap + Vega-Embed)
+│       └── dashboard.html           # Jinja2 HTML frontend (Bootstrap + Vega-Embed)
 │
 ├── config/
 │   ├── __init__.py
-│   └── risk_weights.json            # 11 pesi rischio (somma = 1.00)
+│   └── risk_weights.json            # 11 risk weights (sum = 1.00)
 │
-├── data/                            # SQLite DB generato a runtime
+├── data/                            # SQLite DB created at runtime
 ├── docs/
 │   ├── executive-one-pager.md
 │   ├── executive-one-pager.en.md
@@ -147,64 +147,64 @@ Cognitive_Attack_Mapper/
 │
 ├── ingestion/
 │   ├── __init__.py
-│   └── loader.py                    # CSV loader con fallback encoding
+│   └── loader.py                    # CSV loader with encoding fallback
 │
-├── logs/                            # Log Loguru a runtime
+├── logs/                            # Loguru logs at runtime
 ├── model/
 │   ├── __init__.py
-│   └── risk_engine.py               # Scoring pesato + spiegazioni
+│   └── risk_engine.py               # Weighted scoring + explanations
 │
-├── tests/                           # 13 file, 153 test
+├── tests/                           # 13 files, 153 tests
 │   ├── __init__.py
-│   ├── test_analyzer.py             # 8 test — keyword counting, feature extraction
-│   ├── test_api_contracts.py        # 11 test — contratti API, validazione 400/404
-│   ├── test_edge_cases.py           # 22 test — unicode, emoji, testi lunghi, regex
-│   ├── test_feature_engineering.py  # 1 test — creazione colonne feature
-│   ├── test_hardening.py            # 32 test — DB, auth, sanitizzazione, Docker
-│   ├── test_integration.py          # 2 test — pipeline end-to-end + determinismo
-│   ├── test_loader.py               # 1 test — pulizia dati
-│   ├── test_negative.py             # 8 test — file mancanti, encoding, pesi invalidi
-│   ├── test_nlp_engine.py           # 7 test — shape, normalizzazione, batch, modello
-│   ├── test_p1_features.py          # 58 test — paginazione, webhook retry, preset, KPI
-│   ├── test_quickwins_v2.py         # 16 test — Swagger, CORS, bulk triage, rate limit
-│   ├── test_risk_engine.py          # 2 test — output score + caricamento pesi
-│   └── test_triage_alert_weights.py # 57 test — triage ops, pesi, webhook HMAC, LRU cache
+│   ├── test_analyzer.py             # 8 tests — keyword counting, feature extraction
+│   ├── test_api_contracts.py        # 11 tests — API contracts, 400/404 validation
+│   ├── test_edge_cases.py           # 22 tests — unicode, emoji, long text, regex
+│   ├── test_feature_engineering.py  # 1 test — feature column creation
+│   ├── test_hardening.py            # 32 tests — DB, auth, sanitization, Docker
+│   ├── test_integration.py          # 2 tests — end-to-end pipeline + determinism
+│   ├── test_loader.py               # 1 test — data cleanup
+│   ├── test_negative.py             # 8 tests — missing files, encoding, invalid weights
+│   ├── test_nlp_engine.py           # 7 tests — shape, normalization, batch, model
+│   ├── test_p1_features.py          # 58 tests — pagination, webhook retry, presets, KPI
+│   ├── test_quickwins_v2.py         # 16 tests — Swagger, CORS, bulk triage, rate limit
+│   ├── test_risk_engine.py          # 2 tests — score output + weight loading
+│   └── test_triage_alert_weights.py # 57 tests — triage ops, weights, webhook HMAC, LRU cache
 │
 ├── utils/
 │   ├── __init__.py
-│   └── logger.py                    # Configurazione Loguru
+│   └── logger.py                    # Loguru configuration
 │
 └── visualization/
     ├── __init__.py
-    └── report.py                    # Report Rich per terminale
+    └── report.py                    # Rich table CLI report
 ```
 
 ---
 
-## Requisiti
+## Requirements
 
 - **Python** 3.10+
-- **Virtual environment** consigliato (`.venv`)
-- **14 dipendenze** in `requirements.txt`:
+- **Virtual environment** recommended (`.venv`)
+- **14 dependencies** in `requirements.txt`:
 
-| Pacchetto | Versione | Scopo |
-|-----------|----------|-------|
-| pandas | >=1.3,<3.0 | Manipolazione dati |
-| numpy | >=1.21,<2.0 | Calcolo numerico |
-| scikit-learn | >=1.0,<2.0 | Normalizzazione |
-| networkx | >=2.6 | Analisi grafi (futuro) |
-| sentence-transformers | >=2.2.0,<3.0 | Embedding NLP |
-| rich | >=13.0 | Report CLI |
-| loguru | >=0.6.0 | Logging strutturato |
-| nltk | >=3.8 | Tokenizzazione, VADER sentiment |
-| altair | >=4.2,<6.0 | Specifiche chart Vega-Lite |
-| fastapi | >=0.100,<1.0 | Framework API |
-| uvicorn[standard] | >=0.20,<1.0 | Server ASGI |
-| jinja2 | >=3.1,<4.0 | Template HTML |
+| Package | Version | Purpose |
+|---------|---------|---------|
+| pandas | >=1.3,<3.0 | Data manipulation |
+| numpy | >=1.21,<2.0 | Numeric computation |
+| scikit-learn | >=1.0,<2.0 | Normalization |
+| networkx | >=2.6 | Graph analysis (future) |
+| sentence-transformers | >=2.2.0,<3.0 | NLP embeddings |
+| rich | >=13.0 | CLI reporting |
+| loguru | >=0.6.0 | Structured logging |
+| nltk | >=3.8 | Tokenization, VADER sentiment |
+| altair | >=4.2,<6.0 | Vega-Lite chart specs |
+| fastapi | >=0.100,<1.0 | API framework |
+| uvicorn[standard] | >=0.20,<1.0 | ASGI server |
+| jinja2 | >=3.1,<4.0 | HTML templating |
 | slowapi | >=0.1.9 | Rate limiting |
-| python-dotenv | >=1.0,<2.0 | Variabili `.env` |
+| python-dotenv | >=1.0,<2.0 | `.env` variable loading |
 
-### Installazione
+### Installation
 
 ```bash
 python -m venv .venv
@@ -215,146 +215,146 @@ pip install -r requirements.txt
 
 ---
 
-## Configurazione Ambiente
+## Environment Configuration
 
-Copia `.env.example` in `.env` e personalizza:
+Copy `.env.example` to `.env` and customize:
 
 ```ini
-# API Key per proteggere endpoint sensibili (run, weights, triage, webhook).
-# Se vuota, l'autenticazione e disabilitata (modalita sviluppo).
+# API Key to protect sensitive endpoints (run, weights, triage, webhook).
+# If empty, authentication is disabled (development mode).
 COGNIX_API_KEY=
 
-# Segreto HMAC-SHA256 per firmare i payload webhook in uscita.
+# HMAC-SHA256 secret for signing outgoing webhook payloads.
 COGNIX_WEBHOOK_SECRET=
 
-# Percorso database SQLite per persistenza.
+# SQLite database path for persistence.
 # Default: ./data/cognix.db
 COGNIX_DB_PATH=./data/cognix.db
 
-# Origini CORS ammesse (separate da virgola). Usa * solo in sviluppo.
+# Allowed CORS origins (comma-separated). Use * for development only.
 COGNIX_CORS_ORIGINS=*
 
-# Livello di log: DEBUG, INFO, WARNING, ERROR
+# Log level: DEBUG, INFO, WARNING, ERROR
 LOG_LEVEL=INFO
 
-# Rate limiting globale (richieste/minuto)
+# Global rate limit (requests/minute)
 COGNIX_RATE_LIMIT=120/minute
 ```
 
 ---
 
-## Avvio Rapido
+## Quick Start
 
-### Da terminale
+### Terminal
 
 ```bash
 .venv\Scripts\python.exe -m uvicorn app.dashboard:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Apri: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+Open: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-### Con Docker
+### Docker
 
 ```bash
 docker compose up --build
 ```
 
-Il servizio e disponibile su `http://localhost:8000`. I dati persistono nel volume `cognix-data`.
+Service available at `http://localhost:8000`. Data persists in the `cognix-data` volume.
 
-### Da VS Code (Run/Debug)
+### VS Code Run/Debug
 
-Configurazioni consigliate:
+Recommended setup:
 
-- `.vscode/launch.json` con `Dashboard (Uvicorn)`
-- `.vscode/tasks.json` con `Run Dashboard (Uvicorn)`
+- `.vscode/launch.json` with `Dashboard (Uvicorn)`
+- `.vscode/tasks.json` with `Run Dashboard (Uvicorn)`
 
 ---
 
-## Workflow Consigliato
+## Recommended Workflow
 
-1. Configura dataset e pesi nella sidebar
-2. Avvia **Run Analysis**
-3. Monitora avanzamento nella progress bar SSE
-4. Applica filtri e analizza i tab principali (Results, Users, Charts)
-5. Verifica la sezione Alert e Registro
-6. Gestisci i casi nel tab **Triage** (stato, owner, note, bulk update)
-7. Esporta CSV per reportistica
+1. Configure dataset and weights in the sidebar
+2. Start **Run Analysis**
+3. Follow SSE progress bar
+4. Apply filters and analyze main tabs (Results, Users, Charts)
+5. Review Alerts and Audit sections
+6. Manage cases in the **Triage** tab (status, owner, notes, bulk update)
+7. Export CSV for reporting
 
-Percorsi default:
+Default paths:
 
 - Dataset: `datacommunications.txt.txt`
-- Pesi: `config/risk_weights.json`
+- Weights: `config/risk_weights.json`
 
 ---
 
-## API Reference (20 Endpoint)
+## API Reference (20 Endpoints)
 
 ### Core Pipeline
 
-| Metodo | Path | Descrizione | Protetto |
-|--------|------|-------------|----------|
-| `GET` | `/` | Dashboard HTML | No |
+| Method | Path | Description | Protected |
+|--------|------|-------------|-----------|
+| `GET` | `/` | Dashboard HTML page | No |
 | `GET` | `/api/run/stream` | Pipeline SSE (progress → done/fatal) | No (3/min) |
-| `POST` | `/api/run` | Pipeline sincrona | Si |
-| `POST` | `/api/results` | KPI + chart specs + tabelle filtrate/paginate | No |
-| `GET` | `/api/user/{username}` | Dettaglio utente | No |
+| `POST` | `/api/run` | Synchronous pipeline execution | Yes |
+| `POST` | `/api/results` | KPIs + chart specs + filtered/paginated tables | No |
+| `GET` | `/api/user/{username}` | User drill-down details | No |
 | `GET` | `/api/health` | Health check | No |
 
 ### Export
 
-| Metodo | Path | Descrizione | Protetto |
-|--------|------|-------------|----------|
-| `GET` | `/api/export/csv` | Export CSV completo | No |
-| `GET` | `/api/export/users` | Export aggregato per utente | No |
-| `POST` | `/api/export/filtered` | Export CSV con filtri applicati | No |
+| Method | Path | Description | Protected |
+|--------|------|-------------|-----------|
+| `GET` | `/api/export/csv` | Full CSV export | No |
+| `GET` | `/api/export/users` | Per-user summary export | No |
+| `POST` | `/api/export/filtered` | Filtered CSV export | No |
 
-### Pesi Rischio
+### Risk Weights
 
-| Metodo | Path | Descrizione | Protetto |
-|--------|------|-------------|----------|
-| `GET` | `/api/weights` | Pesi correnti | No |
-| `POST` | `/api/weights` | Aggiorna pesi + opzionale rescore | Si |
+| Method | Path | Description | Protected |
+|--------|------|-------------|-----------|
+| `GET` | `/api/weights` | Current weights | No |
+| `POST` | `/api/weights` | Update weights + optional rescore | Yes |
 
 ### Triage
 
-| Metodo | Path | Descrizione | Protetto |
-|--------|------|-------------|----------|
-| `POST` | `/api/triage/list` | Coda triage con filtri stato/priorita/owner/testo | No |
-| `PATCH` | `/api/triage/item/{id}` | Aggiorna stato/assegnatario/nota singolo item | Si |
-| `POST` | `/api/triage/bulk-update` | Aggiornamento massivo (max 250 item) | Si |
-| `POST` | `/api/triage/bootstrap` | Sync coda triage da risultati analisi | Si |
+| Method | Path | Description | Protected |
+|--------|------|-------------|-----------|
+| `POST` | `/api/triage/list` | Triage queue with status/priority/owner/text filters | No |
+| `PATCH` | `/api/triage/item/{id}` | Update single item status/assignee/note | Yes |
+| `POST` | `/api/triage/bulk-update` | Mass update (max 250 items) | Yes |
+| `POST` | `/api/triage/bootstrap` | Sync triage queue from analysis results | Yes |
 
 ### Alerting
 
-| Metodo | Path | Descrizione | Protetto |
-|--------|------|-------------|----------|
-| `POST` | `/api/alerts/webhook` | Relay alert a webhook esterno (con HMAC) | Si |
+| Method | Path | Description | Protected |
+|--------|------|-------------|-----------|
+| `POST` | `/api/alerts/webhook` | Relay alert to external webhook (with HMAC) | Yes |
 
-### Filter Preset
+### Filter Presets
 
-| Metodo | Path | Descrizione | Protetto |
-|--------|------|-------------|----------|
-| `GET` | `/api/filter-presets` | Lista preset salvati | No |
-| `POST` | `/api/filter-presets` | Crea/salva preset (max 50) | Si |
-| `DELETE` | `/api/filter-presets/{name}` | Elimina preset | Si |
+| Method | Path | Description | Protected |
+|--------|------|-------------|-----------|
+| `GET` | `/api/filter-presets` | List saved presets | No |
+| `POST` | `/api/filter-presets` | Create/save preset (max 50) | Yes |
+| `DELETE` | `/api/filter-presets/{name}` | Delete preset | Yes |
 
 ### KPI Timeline
 
-| Metodo | Path | Descrizione | Protetto |
-|--------|------|-------------|----------|
-| `GET` | `/api/kpi-timeline` | Storico snapshot KPI (max 200) | No |
+| Method | Path | Description | Protected |
+|--------|------|-------------|-----------|
+| `GET` | `/api/kpi-timeline` | KPI snapshot history (max 200) | No |
 
 ---
 
-## Formato Input Dati
+## Input Data Format
 
-Formato atteso (`;` come separatore, senza riga header):
+Expected format (`;` separator, no header row):
 
 ```text
-utente;testo del messaggio
+user;message text
 ```
 
-Esempio dal dataset demo (20 utenti italiani realistici, messaggi bilingue IT/EN):
+Example from the demo dataset (20 realistic Italian users, bilingual IT/EN messages):
 
 ```text
 marco.rossi;Buongiorno a tutti, la riunione e' stata spostata alle 15:00 in sala Galileo
@@ -362,174 +362,174 @@ giulia.bianchi;Ricordo che le richieste ferie per agosto vanno inserite sul port
 alessia.conti;URGENT: Your corporate account has been suspended due to a security breach...
 ```
 
-Il dataset contiene 115 messaggi con distribuzione realistica: ~87% Low, ~8% Medium, ~5% High risk.
+The dataset contains 115 messages with a realistic distribution: ~87% Low, ~8% Medium, ~5% High risk.
 
 ---
 
-## Pesi Rischio (11 Feature)
+## Risk Weights (11 Features)
 
-| Feature | Peso | Tipo | Descrizione |
-|---------|------|------|-------------|
-| `urgency_score` | 0.18 | Keyword/Regex | Urgenza: urgent, immediately, asap, now, quick |
-| `authority_score` | 0.15 | Keyword/Regex | Autorita: manager, director, admin, IT |
-| `semantic_signal` | 0.12 | Embedding | Similarita semantica a template di attacco |
-| `social_proof_score` | 0.10 | Keyword/Regex | Pressione sociale: everyone, everybody, tutti, already approved |
-| `text_length_signal` | 0.08 | Lunghezza | Segnale lunghezza testo (normalizzato) |
-| `sentiment_risk_signal` | 0.08 | VADER | Sentiment negativo/manipolativo |
-| `reciprocity_score` | 0.08 | Keyword/Regex | Reciprocita: favor, return the favor, ricambia, per favore |
-| `commitment_score` | 0.07 | Keyword/Regex | Impegno: as promised, as agreed, come concordato, come promesso |
-| `trust_score` | 0.06 | Keyword/Regex | Fiducia: trust, confidential, secure, official, verified |
-| `liking_score` | 0.04 | Keyword/Regex | Simpatia: dear friend, caro amico, ti stimo |
-| `fear_score` | 0.04 | Keyword/Regex | Paura: account suspended, legal action, penalty, sospeso, bloccato |
+| Feature | Weight | Type | Description |
+|---------|--------|------|-------------|
+| `urgency_score` | 0.18 | Keyword/Regex | Urgency: urgent, immediately, asap, now, quick |
+| `authority_score` | 0.15 | Keyword/Regex | Authority: manager, director, admin, IT |
+| `semantic_signal` | 0.12 | Embedding | Semantic similarity to attack templates |
+| `social_proof_score` | 0.10 | Keyword/Regex | Social pressure: everyone, everybody, tutti, already approved |
+| `text_length_signal` | 0.08 | Length | Text length signal (normalized) |
+| `sentiment_risk_signal` | 0.08 | VADER | Negative/manipulative sentiment |
+| `reciprocity_score` | 0.08 | Keyword/Regex | Reciprocity: favor, return the favor, ricambia, per favore |
+| `commitment_score` | 0.07 | Keyword/Regex | Commitment: as promised, as agreed, come concordato, come promesso |
+| `trust_score` | 0.06 | Keyword/Regex | Trust: trust, confidential, secure, official, verified |
+| `liking_score` | 0.04 | Keyword/Regex | Liking: dear friend, caro amico, ti stimo |
+| `fear_score` | 0.04 | Keyword/Regex | Fear: account suspended, legal action, penalty, sospeso, bloccato |
 
-La somma dei pesi e esattamente **1.00**. I pesi sono personalizzabili via API (`POST /api/weights`) o modificando `config/risk_weights.json`.
+Weights sum to exactly **1.00**. They are customizable via API (`POST /api/weights`) or by editing `config/risk_weights.json`.
 
 ---
 
-## Formula Risk Score
+## Risk Score Formula
 
-Per feature count-based (conteggi keyword/regex):
+For count-based features (keyword/regex matches):
 
 $$
 f_i' = 1 - e^{-f_i}
 $$
 
-> 1 match → 0.632, 2 match → 0.865, 3 match → 0.950
+> 1 match → 0.632, 2 matches → 0.865, 3 matches → 0.950
 
-Per feature gia in $[0,1]$ (sentiment, semantic, text_length):
+For features already in $[0,1]$ (sentiment, semantic, text_length):
 
 $$
 f_i' = \text{clip}(f_i, 0, 1)
 $$
 
-Score normalizzato finale:
+Final normalized score:
 
 $$
 \text{risk\_score} = \frac{\sum_i w_i \cdot f_i'}{\sum_i w_i}
 $$
 
-Bande rischio:
+Risk bands:
 
-| Banda | Intervallo | Colore |
-|-------|-----------|--------|
-| Low | [0.0, 0.4) | Blu |
-| Medium | [0.4, 0.7) | Arancione |
-| High | [0.7, 1.0] | Rosso |
+| Band | Range | Color |
+|------|-------|-------|
+| Low | [0.0, 0.4) | Blue |
+| Medium | [0.4, 0.7) | Orange |
+| High | [0.7, 1.0] | Red |
 
 ---
 
-## Database SQLite
+## SQLite Database
 
-Persistenza automatica con 4 tabelle (WAL mode, thread-safe):
+Automatic persistence with 4 tables (WAL mode, thread-safe):
 
-| Tabella | Contenuto |
-|---------|-----------|
-| `triage_items` | Coda triage (id, data JSON, updated_at) |
-| `filter_presets` | Preset filtri salvati (name, data JSON, created_at) |
-| `kpi_timeline` | Snapshot KPI dopo ogni run (data JSON, created_at) |
-| `audit_log` | Audit trail azioni (action, details, created_at) |
+| Table | Content |
+|-------|---------|
+| `triage_items` | Triage queue (id, JSON data, updated_at) |
+| `filter_presets` | Saved filter presets (name, JSON data, created_at) |
+| `kpi_timeline` | KPI snapshots after each run (JSON data, created_at) |
+| `audit_log` | Action audit trail (action, details, created_at) |
 
-Il DB viene creato automaticamente al primo avvio in `COGNIX_DB_PATH` (default: `./data/cognix.db`).
+The database is created automatically on first startup at `COGNIX_DB_PATH` (default: `./data/cognix.db`).
 
 ---
 
 ## Testing
 
-Esegui tutti i 153 test:
+Run all 153 tests:
 
 ```bash
 .venv\Scripts\python.exe -m pytest tests/ -v --tb=short
 ```
 
-Copertura per area:
+Coverage by area:
 
-| Area | Test | File |
-|------|------|------|
-| Analisi testo | 8 | `test_analyzer.py` |
-| Contratti API | 11 | `test_api_contracts.py` |
-| Edge case | 22 | `test_edge_cases.py` |
+| Area | Tests | File |
+|------|-------|------|
+| Text analysis | 8 | `test_analyzer.py` |
+| API contracts | 11 | `test_api_contracts.py` |
+| Edge cases | 22 | `test_edge_cases.py` |
 | Feature engineering | 1 | `test_feature_engineering.py` |
 | Hardening (DB, auth, XSS, Docker) | 32 | `test_hardening.py` |
-| Integrazione pipeline | 2 | `test_integration.py` |
-| Loader dati | 1 | `test_loader.py` |
-| Casi negativi | 8 | `test_negative.py` |
+| Pipeline integration | 2 | `test_integration.py` |
+| Data loader | 1 | `test_loader.py` |
+| Negative cases | 8 | `test_negative.py` |
 | NLP engine | 7 | `test_nlp_engine.py` |
-| P1 features (paginazione, webhook, preset, KPI) | 58 | `test_p1_features.py` |
+| P1 features (pagination, webhook, presets, KPI) | 58 | `test_p1_features.py` |
 | Quick-wins v2 (Swagger, CORS, bulk, rate limit) | 16 | `test_quickwins_v2.py` |
 | Risk engine | 2 | `test_risk_engine.py` |
-| Triage, alert, pesi, LRU cache | 57 | `test_triage_alert_weights.py` |
+| Triage, alerts, weights, LRU cache | 57 | `test_triage_alert_weights.py` |
 
 ---
 
 ## Docker
 
-### Build e avvio
+### Build and run
 
 ```bash
 docker compose up --build
 ```
 
-### Dettagli container
+### Container details
 
-- **Immagine base**: `python:3.12-slim`
-- **Porta esposta**: 8000
-- **Volume dati**: `cognix-data` → `/app/data` (SQLite DB)
-- **Health check**: ogni 30s su `/api/system/status`
-- **Env file**: `.env` caricato automaticamente
+- **Base image**: `python:3.12-slim`
+- **Exposed port**: 8000
+- **Data volume**: `cognix-data` → `/app/data` (SQLite DB)
+- **Health check**: every 30s on `/api/system/status`
+- **Env file**: `.env` loaded automatically
 - **Restart policy**: `unless-stopped`
 
 ---
 
-## Troubleshooting Rapido
+## Quick Troubleshooting
 
-### 1) Errore JSON frontend (`Unexpected token ... Internal Server Error`)
+### 1) Frontend JSON error (`Unexpected token ... Internal Server Error`)
 
-Un endpoint API ha risposto 500 testuale. Verifica log backend e assicurati di eseguire prima una run (`POST /api/run` o `/api/run/stream`) prima di richiedere risultati.
+An API endpoint returned plain-text 500 instead of JSON. Check backend logs and ensure a run (`POST /api/run` or `/api/run/stream`) is executed before requesting results.
 
-### 2) Modifiche backend non visibili
+### 2) Backend changes not visible
 
-Se il server e avviato senza `--reload`, riavvia Uvicorn.
+If Uvicorn runs without `--reload`, restart the server.
 
-### 3) Webhook test fallito
+### 3) Webhook test failed
 
-Controlla che l'URL inizi con `http://` o `https://`, che il target sia raggiungibile e che accetti `POST` JSON. Il sistema ritenta automaticamente 3 volte su errori 5xx.
+Ensure URL starts with `http://` or `https://`, target is reachable, and target accepts JSON `POST`. The system automatically retries 3 times on 5xx errors.
 
-### 4) Coda triage vuota
+### 4) Empty triage queue
 
-Esegui una run e poi usa `POST /api/triage/bootstrap` oppure il pulsante "Sincronizza da risultati" nel tab Triage.
+Run an analysis first, then trigger `POST /api/triage/bootstrap` or use the "Sync from results" button in the Triage tab.
 
-### 5) Errore 401 Unauthorized
+### 5) 401 Unauthorized error
 
-Se `COGNIX_API_KEY` e impostata nel `.env`, tutti gli endpoint protetti richiedono l'header `X-API-Key`. Per disabilitare l'autenticazione, lascia la variabile vuota.
+If `COGNIX_API_KEY` is set in `.env`, all protected endpoints require the `X-API-Key` header. To disable authentication, leave the variable empty.
 
-### 6) Rate limit superato (429)
+### 6) Rate limit exceeded (429)
 
-Il limite globale e 120 req/min. Gli endpoint pipeline (`/api/run`, `/api/run/stream`) hanno un limite di 3 req/min. Attendi il reset indicato nell'header `X-RateLimit-Reset`.
+The global limit is 120 req/min. Pipeline endpoints (`/api/run`, `/api/run/stream`) have a 3 req/min limit. Wait for the reset indicated in the `X-RateLimit-Reset` header.
 
 ---
 
-## Limiti Noti
+## Known Limitations
 
-- Scoring lineare pesato (non modello supervisionato/adattivo)
-- Nessuna integrazione SIEM nativa out-of-the-box
-- SSE endpoint (`/api/run/stream`) non protetto da API Key
-- Nessun RBAC (role-based access control)
+- Linear weighted scoring (not supervised/adaptive model)
+- No native out-of-the-box SIEM connector
+- SSE endpoint (`/api/run/stream`) not protected by API Key
+- No RBAC (role-based access control)
 
-## Roadmap Tecnica
+## Technical Roadmap
 
-1. Protezione SSRF sugli endpoint webhook
+1. SSRF protection on webhook endpoints
 2. Security headers (CSP, HSTS, X-Frame-Options)
-3. Autenticazione su SSE endpoint
-4. Integrazione SIEM/SOAR tramite connettori dedicati
-5. RBAC e governance avanzata
-6. GitHub Actions CI per test automatici
+3. Authentication on SSE endpoint
+4. Dedicated SIEM/SOAR connectors
+5. Advanced RBAC/governance
+6. GitHub Actions CI for automated testing
 
 ---
 
-## Documentazione Correlata
+## Related Documentation
 
-- Italiano: `docs/technical-stakeholder-security.md`
-- Italiano: `docs/executive-one-pager.md`
-- English: `README.en.md`
-- English: `docs/technical-stakeholder-security.en.md`
-- English: `docs/executive-one-pager.en.md`
+- EN: `docs/technical-stakeholder-security.en.md`
+- EN: `docs/executive-one-pager.en.md`
+- IT: `README.md`
+- IT: `docs/technical-stakeholder-security.md`
+- IT: `docs/executive-one-pager.md`
