@@ -1,0 +1,13 @@
+{
+  "urgency_score": 0.18,
+  "authority_score": 0.15,
+  "semantic_signal": 0.12,
+  "text_length_signal": 0.08,
+  "sentiment_risk_signal": 0.08,
+  "trust_score": 0.06,
+  "social_proof_score": 0.10,
+  "reciprocity_score": 0.08,
+  "commitment_score": 0.07,
+  "liking_score": 0.04,
+  "fear_score": 0.04
+}

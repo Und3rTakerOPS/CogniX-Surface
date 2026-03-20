@@ -1,0 +1,115 @@
+marco.rossi;Buongiorno a tutti, la riunione di allineamento e' stata spostata alle 15:00 in sala Galileo
+giulia.bianchi;Ricordo che le richieste ferie per agosto vanno inserite sul portale HR entro venerdi
+luca.ferrari;Ho pushato il fix per il bug #4521 sul branch develop, chi fa la code review?
+alessia.conti;Il report trimestrale dei costi e' pronto, lo trovate nella cartella condivisa Finance Q1
+roberto.esposito;Reminder: il corso obbligatorio sulla cybersecurity awareness scade lunedi prossimo
+elena.moretti;Allego la bozza del comunicato stampa per il lancio prodotto. Feedback entro domani?
+davide.colombo;Team leads: portate i KPI aggiornati al prossimo steering committee di giovedi
+francesca.ricci;Il cliente Meridian ha aperto un ticket critico sulla latenza del servizio, priorita alta
+paolo.gallo;Chiuso il deal con TechFlow per 45K annui. Contratto firmato e inviato al legal
+sara.martini;Vi ricordo che il NDA con il fornitore esterno va rinnovato entro fine mese
+andrea.romano;Manutenzione programmata sui server di staging sabato dalle 6:00 alle 10:00
+chiara.greco;Stand-up di domani cancellato, ci vediamo direttamente al retrospective di venerdi
+valentina.leone;Ho completato la traduzione delle FAQ per la versione italiana del sito
+giovanni.costa;L ordine dei laptop per i nuovi assunti e' stato confermato, consegna prevista il 28
+silvia.mancini;Il dashboard di analytics mostra un calo del 12 percento nelle conversioni questa settimana
+matteo.bruno;Aggiornamento certificati SSL completato su tutti i domini di produzione
+laura.lombardi;Benvenuti ai nuovi colleghi: Martina Valenti e Francesco De Luca, iniziano lunedi in R&D
+simone.fontana;Qualcuno viene alla cena aziendale di venerdi? Confermo la prenotazione per 20 persone
+luca.ferrari;Il deploy di venerdi e' andato liscio, nessun rollback necessario. Buon weekend a tutti!
+paolo.gallo;Ho prenotato la sala riunioni grande per il workshop di giovedi, 9:00-13:00
+sara.martini;Ricordo che qualsiasi modifica contrattuale superiore a 10K deve passare dall ufficio legale
+chiara.greco;Il progetto Lighthouse e' in anticipo sui tempi, ottimo lavoro del team frontend
+valentina.leone;Il pranzo di team di oggi e' confermato alle 12:30 al ristorante Le Terrazze
+giovanni.costa;Aggiornamento inventario magazzino completato, report disponibile su SharePoint
+simone.fontana;Qualcuno ha il numero del tecnico per la macchina del caffe al terzo piano? E rotta di nuovo
+marco.rossi;Grazie a tutti per lo sprint finale sul rilascio. Pausa mercoledi con torta in sala break!
+alessia.conti;Il sistema di fatturazione e' stato migrato con successo alla nuova piattaforma cloud
+roberto.esposito;Ricordo di non condividere mai credenziali via email o chat, usate sempre il password manager aziendale
+davide.colombo;Buon lavoro sul pitch per il cliente Horizon. Il feedback e' stato molto positivo
+francesca.ricci;Ticket #8834 risolto: il cliente ha confermato che il problema di connessione era lato loro
+sara.martini;Vi informo che il contratto con CloudBase e' stato rinnovato per altri 24 mesi
+andrea.romano;Patch di sicurezza applicata con successo su tutti i server di produzione domenica notte
+chiara.greco;La retrospettiva ha evidenziato il bisogno di piu pair programming. Organizzo sessioni settimanali
+valentina.leone;Ho finito la prima bozza del case study per NovaTech, la condivido nel canale marketing
+giovanni.costa;Il servizio di pulizia ha cambiato orari: ora dalle 19:00 alle 22:00, lunedi-venerdi
+silvia.mancini;Quick update: il modello di forecasting e' stato ricalibrato con i dati di febbraio
+matteo.bruno;VPN aziendale: nuovi certificati distribuiti, reinstallate il client seguendo la guida su Confluence
+laura.lombardi;Ecco il calendario dei corsi di formazione per il prossimo trimestre, iscrizioni aperte
+laura.lombardi;Reminder: colloqui per la posizione di UX Designer, primo candidato lunedi alle 10:00
+marco.rossi;Si lavora bene in questo team, complimenti a tutti per i risultati del Q1
+giulia.bianchi;Piano welfare aziendale 2026: quest anno aggiungiamo la palestra convenzionata e i buoni pasto da 8 EUR
+luca.ferrari;Il CI pipeline e' stabile da 30 giorni consecutivi, zero build fallite
+elena.moretti;Le metriche social di marzo: +2300 follower su LinkedIn, engagement rate al 4.2 percento
+davide.colombo;Town hall aziendale confermata per venerdi 4 aprile ore 16:00, partecipazione obbligatoria
+francesca.ricci;NPS di marzo: 72 punti, in crescita rispetto a febbraio (68). Trend positivo!
+paolo.gallo;Pipeline commerciale: 12 opportunita in fase di negoziazione per un totale di 380K
+sara.martini;Aggiornamento privacy policy pubblicato sul sito, versione 3.2 conforme al Digital Markets Act
+chiara.greco;Sprint planning di lunedi: ricordate di aggiornare il backlog su Jira prima delle 9:00
+valentina.leone;Ho scritto il post per il blog aziendale sulla giornata dell innovazione. Chi lo revisiona?
+giovanni.costa;La stampante al secondo piano e' di nuovo inceppata, ho chiamato l assistenza
+silvia.mancini;Analisi churn: il tasso di abbandono e' sceso al 3.1 percento grazie alle nuove campagne di retention
+matteo.bruno;Firewall rules aggiornate: aperta la porta 8443 per il nuovo servizio di monitoring
+simone.fontana;Il webinar sulla digital transformation e' stato registrato, link nella intranet sezione Formazione
+camilla.serra;Promemoria: la policy sulla data retention prevede la cancellazione dei log dopo 90 giorni
+marco.rossi;Meeting con il cliente Orion andato bene, prossimi passi condivisi su Confluence
+giulia.bianchi;I nuovi badge per l accesso al piano 5 sono pronti, ritirateli in reception entro venerdi
+luca.ferrari;Dependency update: aggiornate le librerie con vulnerabilita note, nessun breaking change
+roberto.esposito;Sessione di phishing simulation completata: il 23 percento ha cliccato sul link, dobbiamo migliorare
+elena.moretti;La campagna di lancio ha raggiunto 150K impressions nella prima settimana
+davide.colombo;Great news: abbiamo ottenuto la certificazione SOC 2 Type II. Grazie al team compliance!
+francesca.ricci;Nuovo processo di escalation: i ticket P1 vanno assegnati entro 15 minuti dall apertura
+paolo.gallo;Confermata la partecipazione al Web Summit di novembre, prepariamo lo stand
+sara.martini;Legal review completata sul contratto di partnership con DataBridge, nessun red flag
+andrea.romano;Backup notturno completato con successo, 2.4TB replicati nel disaster recovery site
+chiara.greco;Velocity del team in crescita: da 42 a 51 story point negli ultimi 3 sprint
+valentina.leone;Primo mese in azienda, sto imparando tantissimo. Grazie per il supporto del team!
+giovanni.costa;La nuova area lounge al quinto piano e' pronta, inaugurazione informale giovedi alle 17:00
+silvia.mancini;Segmentazione clienti aggiornata: 5 cluster identificati con il nuovo modello k-means
+laura.lombardi;Aggiornamento organigramma: Dott.ssa Bianchi promossa a Head of People & Culture
+camilla.serra;Risk assessment annuale completato, tre aree di miglioramento identificate nel report allegato
+marco.rossi;Domani ultimo giorno per iscriversi alla partita di calcetto aziendale, mancano 2 giocatori
+luca.ferrari;Refactoring del modulo di autenticazione completato, 40 percento in meno di complessita ciclomatica
+alessia.conti;Chiusura contabile mensile nei tempi previsti, zero discrepanze nel riconcilio bancario
+elena.moretti;Abbiamo vinto il premio Best Digital Campaign al Marketing Forum, complimenti al team creativo!
+francesca.ricci;Il chatbot di supporto ha gestito il 45 percento delle richieste in autonomia questo mese, ottimo risultato
+paolo.gallo;Offerta per il prospect Meridian inviata, valore 78K annui, risposta attesa entro venerdi
+sara.martini;Ricordo che la firma digitale dei documenti legali via DocuSign e' l unico metodo approvato
+chiara.greco;Demo al cliente finale fissata per il 15 aprile, feature freeze da lunedi prossimo
+valentina.leone;Ho organizzato il materiale onboarding in una pagina Notion, link condiviso nel canale hr
+giovanni.costa;Nuovo distributore automatico installato al piano terra, accetta anche il badge aziendale
+laura.lombardi;Le nuove policy sullo smart working permettono fino a 3 giorni da remoto, dettagli sulla intranet
+simone.fontana;Proposta per il team outing di giugno: escape room + aperitivo. Voto nel sondaggio Teams
+camilla.serra;Audit trail review completata, nessuna anomalia nei log di accesso di marzo
+silvia.mancini;Il report di data quality e' preoccupante: 8 percento di record incompleti nel CRM, serve un cleanup
+matteo.bruno;Importante: tutti i device personali usati per lavoro devono essere registrati nell MDM entro il 20
+roberto.esposito;Come responsabile della sicurezza, ecco il consuntivo degli incidenti Q1: 3 tentativi phishing bloccati, 0 data breach
+simone.fontana;As agreed in our last call, I am sending the proposal for the enterprise package. Let me know if adjustments are needed
+marco.rossi;Per favore, chi ha le credenziali dell account AWS di staging le condivida con il team DevOps urgente
+stefano.russo;URGENT: the production database is showing critical latency spikes. Need DBA team immediately
+camilla.serra;IMPORTANTE: nuova policy GDPR, tutti i dati dei clienti EU vanno cifrati a riposo entro il 15
+elena.moretti;Come concordato nella riunione di ieri, ecco il budget marketing aggiornato per Q2
+davide.colombo;Reminder: one-on-one con i team lead confermati per domani. Check calendar per gli slot
+silvia.mancini;L A/B test sulla nuova landing page mostra un aumento del 18 percento di click-through rate, risultati promettenti
+matteo.bruno;As promised, here is the network audit report we discussed last week. Let me know if you need clarifications
+camilla.serra;L audit di conformita ISO 27001 e' fissato per il 12 aprile, preparate la documentazione
+giulia.bianchi;Come promesso, allego i template aggiornati per le valutazioni di performance annuali
+alessia.conti;Come concordato con il direttore finanziario, ho riclassificato le voci di costo secondo il nuovo piano dei conti
+stefano.russo;Piccolo reminder: le note spese del mese vanno approvate dal manager entro il 5
+giulia.bianchi;URGENTE: Il direttore ha bisogno di approvare il budget immediatamente. Non ritardate la firma ora
+paolo.gallo;Come discusso, il director ha autorizzato lo sconto speciale per NexGen, procedi con la firma immediatamente
+alessia.conti;URGENT: Your corporate account has been suspended due to a security breach. As the IT admin, everyone must verify immediately at this official secure portal now. Failure to comply will result in legal action and permanent account blocked
+stefano.russo;I am the IT admin and this is a confidential secure request. Everyone has already approved this now. Your system requires an urgent security patch immediately. Run the attached file or face account suspension and penalty
+camilla.serra;URGENT: Your account will be blocked immediately due to a security breach. As the IT admin, this is an official secure confidential verification. Everyone has already approved. Act now or face penalty and legal action
+andrea.romano;CRITICAL: Security breach detected. As the IT admin, I need everyone to verify their credentials immediately at this secure official portal now. This is urgent and confidential. Account suspended for non-compliance, legal action will follow
+davide.colombo;URGENT: Everybody has already approved this now. As the director and admin, trust me, this is officially verified and secure. Sign immediately or face penalty and legal action. This is confidential
+stefano.russo;ACCOUNT SUSPENDED: Everybody already approved this secure official process. As the IT admin, you must verify immediately and reset now. This breach requires urgent action or penalty and legal action will be taken against you
+andrea.romano;I helped you fix the server issue last weekend. Now return the favor, as the IT admin I urgently need the production credentials immediately. This is confidential and everyone has already approved this request now
+francesca.ricci;Caro amico, ti stimo molto. Come promesso, ricambia il favore per favore. Come admin del sistema, questa e' una richiesta ufficiale confidenziale urgente. Tutti hanno gia approvato, agisci immediatamente
+luca.ferrari;PENALTY WARNING: Your account has been suspended and will be blocked. As the IT admin, this breach requires you to verify immediately at this secure official portal now. Legal action will follow if you do not comply urgently
+alessia.conti;URGENT: As the finance director and admin, I authorize you to bypass the standard approval now. This is a confidential secure transfer, everyone has already approved. Do it immediately or face penalty. Trust me, this is official and verified
+laura.lombardi;Ti stimo molto, caro amico. Per favore ricambia il favore urgente. Come admin IT, tutti hanno gia approvato questa richiesta confidenziale ufficiale. Invia immediatamente le credenziali o il tuo account sara sospeso e bloccato
+matteo.bruno;Dear colleague, this is a confidential urgent request from the IT admin. Trust me, everyone has already approved. You must immediately share the SSH keys now or your account will be suspended. This is an official secure verification
+simone.fontana;Dear friend, as the IT admin I helped you before. Return the favor now urgently. Everyone has already approved this confidential secure request. Failure to comply immediately will result in account suspended and legal action
+giulia.bianchi;PENALTY: As the director and admin, tutti hanno gia approvato. Come promesso, questa verifica ufficiale e' urgente e confidenziale. Il vostro account risulta sospeso e bloccato. Agite immediatamente per evitare azioni legali
+roberto.esposito;URGENT BREACH: As the IT admin, everyone must immediately verify their secure official credentials now. Your account has been suspended due to suspicious activity. This is confidential. Penalty and legal action for non-compliance
