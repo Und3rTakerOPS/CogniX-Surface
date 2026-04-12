@@ -2,6 +2,8 @@
 
 > Cognitive risk analysis platform for detecting social engineering attacks in corporate communications.
 
+<img width="1916" height="1077" alt="CongniX" src="https://github.com/user-attachments/assets/72d85b2e-7946-48ce-8b7a-a3124a4fa166" />
+
 ---
 
 ## Overview
