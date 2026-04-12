@@ -250,7 +250,7 @@ COGNIX_RATE_LIMIT=120/minute
 ### Terminal
 
 ```bash
-.venv\Scripts\python.exe -m uvicorn app.dashboard:app --host 127.0.0.1 --port 8000 --reload
+& .\.venv\Scripts\python.exe -m uvicorn app.dashboard:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 Open: [http://127.0.0.1:8000](http://127.0.0.1:8000)
